@@ -104,3 +104,14 @@ body:before {
 .preview-name {
   text-shadow: 0 0 12px currentColor;
 }
+
+:root {
+  --bg: #07111e;
+  --panel: #101e30;
+  --panel2: #172b42;
+  --line: #294766;
+  --green: #39aaff;
+  --muted: #a4b9d0;
+  --white: #f4f8ff;
+  --yellow: #ffd95a;
+}
