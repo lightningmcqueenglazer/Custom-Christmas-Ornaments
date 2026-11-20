@@ -1,19 +1,139 @@
-<div class="swatches" id="swatches">
-  <button class="swatch selected" data-color="#168de0"
-    style="background:#168de0" aria-label="Blue"></button>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ornament Lab | Custom Christmas Ornaments</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
 
-  <button class="swatch" data-color="#e53945"
-    style="background:#e53945" aria-label="Red"></button>
+  <header class="navbar">
+    <h1>ORNAMENT LAB</h1>
+    <button onclick="toggleCart()">Cart <span id="cartCount">0</span></button>
+  </header>
 
-  <button class="swatch" data-color="#18864b"
-    style="background:#18864b" aria-label="Christmas green"></button>
+  <section class="hero">
+    <div class="snow"></div>
+    <h2>MAKE CHRISTMAS<br>YOUR OWN.</h2>
+    <p>Custom 3D printed ornaments made your way.</p>
+    <a href="#products" class="button">SHOP ORNAMENTS</a>
+  </section>
 
-  <button class="swatch" data-color="#f4f0df"
-    style="background:#f4f0df" aria-label="White"></button>
+  <section id="products" class="products">
+    <h2>THE COLLECTION</h2>
 
-  <button class="swatch" data-color="#e7b83f"
-    style="background:#e7b83f" aria-label="Gold"></button>
+    <div class="product-grid">
 
-  <button class="swatch" data-color="#a66bca"
-    style="background:#a66bca" aria-label="Purple"></button>
-</div>
+      <div class="product">
+        <div class="product-art hat">🎩</div>
+        <h3>Top Hat</h3>
+        <p>$14.00</p>
+        <button onclick="customize('Top Hat',14)">Customize</button>
+      </div>
+
+      <div class="product">
+        <div class="product-art sword">⚔️</div>
+        <h3>Sword</h3>
+        <p>$16.00</p>
+        <button onclick="customize('Sword',16)">Customize</button>
+      </div>
+
+      <div class="product">
+        <div class="product-art skateboard">🛹</div>
+        <h3>Skateboard</h3>
+        <p>$15.00</p>
+        <button onclick="customize('Skateboard',15)">Customize</button>
+      </div>
+
+      <div class="product">
+        <div class="product-art guitar">🎸</div>
+        <h3>Guitar</h3>
+        <p>$17.00</p>
+        <button onclick="customize('Guitar',17)">Customize</button>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="about">
+    <h2>MADE FOR YOU</h2>
+    <p>
+      Every ornament can be customized with colors, names,
+      and styles to make your Christmas decorations unique.
+    </p>
+  </section>
+
+  <footer>
+    <p>ORNAMENT LAB © 2026</p>
+    <p>Custom 3D Printed Christmas Decorations</p>
+  </footer>
+
+  <!-- Customization Popup -->
+  <div id="customizer" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeCustomizer()">×</span>
+
+      <h2 id="customTitle">Customize</h2>
+
+      <label>Name or Text</label>
+      <input id="customName" type="text" maxlength="20"
+             placeholder="Enter a name">
+
+      <label>Color</label>
+      <div class="color-options">
+        <button class="swatch blue" onclick="selectColor('#168de0')"></button>
+        <button class="swatch red" onclick="selectColor('#e53945')"></button>
+        <button class="swatch green" onclick="selectColor('#18864b')"></button>
+        <button class="swatch white" onclick="selectColor('#f4f0df')"></button>
+        <button class="swatch gold" onclick="selectColor('#e7b83f')"></button>
+        <button class="swatch purple" onclick="selectColor('#a66bca')"></button>
+      </div>
+
+      <label>Lettering</label>
+      <select id="letterStyle">
+        <option value="Classic">Classic</option>
+        <option value="Bold">Bold</option>
+        <option value="Italic">Italic</option>
+      </select>
+
+      <label>Quantity</label>
+      <input id="quantity" type="number" min="1" value="1">
+
+      <button class="add-button" onclick="addToCart()">ADD TO CART</button>
+    </div>
+  </div>
+
+  <!-- Cart Popup -->
+  <div id="cartModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="toggleCart()">×</span>
+      <h2>Your Cart</h2>
+
+      <div id="cartItems"></div>
+
+      <h3 id="cartTotal">Total: $0.00</h3>
+
+      <button class="add-button" onclick="checkout()">Checkout</button>
+    </div>
+  </div>
+
+  <!-- Checkout Popup -->
+  <div id="checkoutModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeCheckout()">×</span>
+      <h2>Checkout</h2>
+
+      <input id="checkoutEmail" placeholder="Email" type="email">
+      <input id="checkoutName" placeholder="Full Name">
+      <input id="checkoutAddress" placeholder="Shipping Address">
+      <input id="checkoutCity" placeholder="City">
+      <input id="checkoutZip" placeholder="ZIP Code">
+
+      <button class="add-button" onclick="placeOrder()">Place Order</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
