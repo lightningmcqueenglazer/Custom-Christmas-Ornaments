@@ -1,8 +1,8 @@
 const products = [
-  {name:'Top Hat',price:14,emoji:'🎩',color:'#168de0'},
-  {name:'Sword',price:16,emoji:'⚔️',color:'#168de0'},
-  {name:'Skateboard',price:15,emoji:'🛹',color:'#168de0'},
-  {name:'Guitar',price:17,emoji:'🎸',color:'#168de0'}
+  {name:'Top Hat',price:5,emoji:'🎩',color:'#168de0'},
+  {name:'Sword',price:5,emoji:'⚔️',color:'#168de0'},
+  {name:'Skateboard',price:5,emoji:'🛹',color:'#168de0'},
+  {name:'Guitar',price:5,emoji:'🎸',color:'#168de0'}
 ];
 
 const colors = [
