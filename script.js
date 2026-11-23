@@ -1,194 +1,259 @@
+const products = [
+  {name:'Top Hat',price:14,emoji:'🎩',color:'#168de0'},
+  {name:'Sword',price:16,emoji:'⚔️',color:'#168de0'},
+  {name:'Skateboard',price:15,emoji:'🛹',color:'#168de0'},
+  {name:'Guitar',price:17,emoji:'🎸',color:'#168de0'}
+];
+
+const colors = [
+  {name:'Blue',hex:'#168de0'},
+  {name:'Red',hex:'#e53945'},
+  {name:'Christmas Green',hex:'#18864b'},
+  {name:'Ivory',hex:'#f4f0df'},
+  {name:'Gold',hex:'#e7b83f'},
+  {name:'Purple',hex:'#a66bca'}
+];
+
+let chosenProduct = null;
+let chosenColor = '#168de0';
 let cart = [];
-let selectedColor = "#168de0";
-let currentProduct = "";
-let currentPrice = 0;
 
-// CUSTOMIZER
+const pages = [
+  'homePage',
+  'detailPage',
+  'cartPage',
+  'checkoutPage'
+];
 
-function customize(name, price) {
-  currentProduct = name;
-  currentPrice = price;
+function showPage(id){
+  pages.forEach(p =>
+    document.getElementById(p).classList.toggle('hidden',p!==id)
+  );
 
-  document.getElementById("customTitle").textContent =
-    "Customize " + name;
-
-  document.getElementById("customName").value = "";
-  document.getElementById("quantity").value = 1;
-
-  selectedColor = "#168de0";
-
-  document.getElementById("customizer").style.display = "flex";
+  window.scrollTo(0,0);
 }
 
-function closeCustomizer() {
-  document.getElementById("customizer").style.display = "none";
+function goHome(){
+  showPage('homePage');
 }
 
-function selectColor(color) {
-  selectedColor = color;
+function renderProducts(){
+  document.getElementById('productGrid').innerHTML =
+    products.map((p,i)=>`
+      <article class="product-card" onclick="openProduct(${i})">
+        <div class="product-art">${p.emoji}</div>
+        <div class="card-copy">
+          <h3>${p.name}</h3>
+          <p class="price">$${p.price.toFixed(2)}</p>
+          <p>Personalize colors and lettering.</p>
+          <button>VIEW & CUSTOMIZE</button>
+        </div>
+      </article>
+    `).join('');
+}
+
+// PRODUCT DETAILS
+
+function openProduct(i){
+  chosenProduct = products[i];
+  chosenColor = chosenProduct.color;
+
+  document.getElementById('detailTitle').textContent =
+    chosenProduct.name;
+
+  document.getElementById('detailPrice').textContent =
+    '$'+chosenProduct.price.toFixed(2);
+
+  document.getElementById('previewEmoji').textContent =
+    chosenProduct.emoji;
+
+  document.getElementById('nameText').value = '';
+  document.getElementById('qty').value = 1;
+  document.getElementById('fontChoice').value = 'classic';
+
+  renderSwatches();
+  updatePreview();
+  showPage('detailPage');
+}
+
+// COLOR OPTIONS
+
+function renderSwatches(){
+  document.getElementById('swatches').innerHTML =
+    colors.map(c=>`
+      <button
+        class="swatch ${chosenColor===c.hex?'selected':''}"
+        title="${c.name}"
+        aria-label="${c.name}"
+        style="background:${c.hex}"
+        onclick="pickColor('${c.hex}')">
+      </button>
+    `).join('');
+}
+
+function pickColor(hex){
+  chosenColor = hex;
+  renderSwatches();
+  updatePreview();
+}
+
+// LIVE PREVIEW
+
+function updatePreview(){
+  if(!chosenProduct)return;
+
+  let shape = document.querySelector('.ornament-shape');
+
+  shape.style.setProperty('--ornament-color',chosenColor);
+  shape.style.background = chosenColor;
+
+  let name = document.getElementById('previewName');
+
+  name.textContent = document.getElementById('nameText').value;
+
+  name.className =
+    'preview-name '+document.getElementById('fontChoice').value;
 }
 
 // ADD TO CART
 
-function addToCart() {
-  const name = document.getElementById("customName").value;
-  const style = document.getElementById("letterStyle").value;
-  const quantity = parseInt(document.getElementById("quantity").value);
+function addDetailToCart(){
+  let qty = parseInt(document.getElementById('qty').value,10);
 
-  if (!quantity || quantity < 1) {
-    alert("Please enter a valid quantity.");
+  if(!qty || qty<1){
+    toast('Choose a valid quantity');
     return;
   }
 
   cart.push({
-    product: currentProduct,
-    price: currentPrice,
-    name: name,
-    color: selectedColor,
-    style: style,
-    quantity: quantity
+    product:chosenProduct.name,
+    price:chosenProduct.price,
+    emoji:chosenProduct.emoji,
+    name:document.getElementById('nameText').value,
+    color:chosenColor,
+    font:document.getElementById('fontChoice').value,
+    qty
   });
 
-  updateCart();
-
-  closeCustomizer();
-
-  alert("Added to cart!");
+  refreshCount();
+  toast('Added to cart');
+  goHome();
 }
 
-// UPDATE CART
+// CART
 
-function updateCart() {
-  let totalItems = 0;
-
-  cart.forEach(item => {
-    totalItems += item.quantity;
-  });
-
-  document.getElementById("cartCount").textContent = totalItems;
+function refreshCount(){
+  document.getElementById('cartCount').textContent =
+    cart.reduce((n,x)=>n+x.qty,0);
 }
 
-// OPEN CART
+function cartSum(){
+  return cart.reduce((n,x)=>n+x.price*x.qty,0);
+}
 
-function toggleCart() {
-  const modal = document.getElementById("cartModal");
-
-  if (modal.style.display === "flex") {
-    modal.style.display = "none";
-  } else {
-    renderCart();
-    modal.style.display = "flex";
+function openCart(){
+  if(!cart.length){
+    toast('Your cart is empty');
+    return;
   }
-}
 
-// DISPLAY CART
-
-function renderCart() {
-  const cartItems = document.getElementById("cartItems");
-
-  cartItems.innerHTML = "";
-
-  let total = 0;
-
-  cart.forEach((item, index) => {
-    total += item.price * item.quantity;
-
-    const div = document.createElement("div");
-    div.className = "cart-item";
-
-    div.innerHTML = `
-      <strong>${item.product}</strong>
-      <p>Name: ${escapeHTML(item.name || "None")}</p>
-      <p>Color: ${item.color}</p>
-      <p>Lettering: ${item.style}</p>
-      <p>Quantity: ${item.quantity}</p>
-      <p>$${(item.price * item.quantity).toFixed(2)}</p>
-      <button onclick="removeItem(${index})">Remove</button>
-    `;
-
-    cartItems.appendChild(div);
-  });
-
-  document.getElementById("cartTotal").textContent =
-    "Total: $" + total.toFixed(2);
-}
-
-function removeItem(index) {
-  cart.splice(index, 1);
-  updateCart();
   renderCart();
+  showPage('cartPage');
+}
+
+function renderCart(){
+  document.getElementById('cartList').innerHTML =
+    cart.map((x,i)=>`
+      <div class="cart-item">
+        <h3>${x.emoji} ${x.product}</h3>
+        <p>Name: ${safe(x.name||'—')}</p>
+        <p>Color: ${x.color}</p>
+        <p>Font: ${x.font}</p>
+        <p>Quantity: ${x.qty}</p>
+        <strong>$${(x.price*x.qty).toFixed(2)}</strong>
+        <button class="back" onclick="removeItem(${i})">Remove</button>
+      </div>
+    `).join('');
+
+  document.getElementById('cartTotal').textContent =
+    '$'+cartSum().toFixed(2);
+}
+
+function removeItem(i){
+  cart.splice(i,1);
+  refreshCount();
+
+  if(cart.length){
+    renderCart();
+  }else{
+    goHome();
+  }
 }
 
 // CHECKOUT
 
-function checkout() {
-  if (cart.length === 0) {
-    alert("Your cart is empty!");
-    return;
-  }
+function goCheckout(){
+  if(!cart.length)return;
 
-  document.getElementById("cartModal").style.display = "none";
-  document.getElementById("checkoutModal").style.display = "flex";
-}
+  document.getElementById('checkoutTotal').textContent =
+    '$'+cartSum().toFixed(2);
 
-function closeCheckout() {
-  document.getElementById("checkoutModal").style.display = "none";
+  showPage('checkoutPage');
 }
 
 // DEMO ORDER
 
-function placeOrder() {
-  const email = document.getElementById("checkoutEmail").value;
-  const name = document.getElementById("checkoutName").value;
-  const address = document.getElementById("checkoutAddress").value;
-  const city = document.getElementById("checkoutCity").value;
-  const zip = document.getElementById("checkoutZip").value;
+function placeDemoOrder(){
+  let fields = [
+    'buyerName',
+    'buyerEmail',
+    'street',
+    'city',
+    'zip'
+  ];
 
-  if (!email || !name || !address || !city || !zip) {
-    alert("Please fill out all checkout fields.");
+  if(fields.some(id=>!document.getElementById(id).value.trim())){
+    toast('Please complete the required fields');
     return;
   }
 
-  alert("Demo checkout complete! This website does not yet process payments or submit orders.");
+  toast('Demo order complete! No payment was taken.');
 
   cart = [];
-  updateCart();
+  refreshCount();
 
-  closeCheckout();
+  fields.forEach(id=>{
+    document.getElementById(id).value='';
+  });
 
-  document.getElementById("checkoutEmail").value = "";
-  document.getElementById("checkoutName").value = "";
-  document.getElementById("checkoutAddress").value = "";
-  document.getElementById("checkoutCity").value = "";
-  document.getElementById("checkoutZip").value = "";
+  setTimeout(goHome,1300);
 }
 
 // HTML SAFETY
 
-function escapeHTML(text) {
-  return String(text).replace(/[&<>"']/g, character => {
-    const replacements = {
-      "&": "&amp;",
-      "<": "&lt;",
-      ">": "&gt;",
-      '"': "&quot;",
-      "'": "&#39;"
-    };
-
-    return replacements[character];
-  });
+function safe(s){
+  return String(s).replace(/[&<>"']/g,c=>({
+    '&':'&amp;',
+    '<':'&lt;',
+    '>':'&gt;',
+    '"':'&quot;',
+    "'":'&#39;'
+  }[c]));
 }
 
-// CLOSE MODALS BY CLICKING OUTSIDE
+// NOTIFICATIONS
 
-window.addEventListener("click", function(event) {
-  const modals = ["customizer", "cartModal", "checkoutModal"];
+function toast(msg){
+  let t = document.getElementById('toast');
 
-  modals.forEach(id => {
-    const modal = document.getElementById(id);
+  t.textContent = msg;
+  t.style.display = 'block';
 
-    if (event.target === modal) {
-      modal.style.display = "none";
-    }
-  });
-});
+  setTimeout(()=>{
+    t.style.display='none';
+  },2300);
+}
+
+// INITIALIZE
+
+renderProducts();
