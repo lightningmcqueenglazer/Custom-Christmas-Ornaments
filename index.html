@@ -1,139 +1,144 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ornament Lab | Custom Christmas Ornaments</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ornament Lab</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <header class="navbar">
-    <h1>ORNAMENT LAB</h1>
-    <button onclick="toggleCart()">Cart <span id="cartCount">0</span></button>
-  </header>
+<header class="top">
+  <a class="brand" href="#home" onclick="goHome()">ORNAMENT <span>LAB</span></a>
+  <button class="cart-btn" onclick="openCart()">Cart <b id="cartCount">0</b></button>
+</header>
 
+<main id="homePage">
   <section class="hero">
-    <div class="snow"></div>
-    <h2>MAKE CHRISTMAS<br>YOUR OWN.</h2>
-    <p>Custom 3D printed ornaments made your way.</p>
-    <a href="#products" class="button">SHOP ORNAMENTS</a>
+    <div class="snowflakes">❄　✦　❄　✧　❄</div>
+    <p class="eyebrow">THE HOLIDAY COLLECTION</p>
+    <h1>MAKE CHRISTMAS<br>YOUR OWN.</h1>
+    <p>Personalized 3D printed ornaments, designed by you.</p>
+    <a href="#products" class="primary">SHOP THE COLLECTION</a>
   </section>
 
-  <section id="products" class="products">
-    <h2>THE COLLECTION</h2>
-
-    <div class="product-grid">
-
-      <div class="product">
-        <div class="product-art hat">🎩</div>
-        <h3>Top Hat</h3>
-        <p>$14.00</p>
-        <button onclick="customize('Top Hat',14)">Customize</button>
-      </div>
-
-      <div class="product">
-        <div class="product-art sword">⚔️</div>
-        <h3>Sword</h3>
-        <p>$16.00</p>
-        <button onclick="customize('Sword',16)">Customize</button>
-      </div>
-
-      <div class="product">
-        <div class="product-art skateboard">🛹</div>
-        <h3>Skateboard</h3>
-        <p>$15.00</p>
-        <button onclick="customize('Skateboard',15)">Customize</button>
-      </div>
-
-      <div class="product">
-        <div class="product-art guitar">🎸</div>
-        <h3>Guitar</h3>
-        <p>$17.00</p>
-        <button onclick="customize('Guitar',17)">Customize</button>
-      </div>
-
-    </div>
+  <section id="products" class="collection">
+    <p class="eyebrow">MADE TO BE YOURS</p>
+    <h2>Pick your ornament</h2>
+    <div class="product-grid" id="productGrid"></div>
   </section>
 
-  <section class="about">
-    <h2>MADE FOR YOU</h2>
-    <p>
-      Every ornament can be customized with colors, names,
-      and styles to make your Christmas decorations unique.
-    </p>
-  </section>
+  <footer>ORNAMENT LAB · CUSTOM 3D PRINTED HOLIDAY DECOR</footer>
+</main>
 
-  <footer>
-    <p>ORNAMENT LAB © 2026</p>
-    <p>Custom 3D Printed Christmas Decorations</p>
-  </footer>
+<main id="detailPage" class="detail-page hidden">
+  <button class="back" onclick="goHome()">← Back to collection</button>
 
-  <!-- Customization Popup -->
-  <div id="customizer" class="modal">
-    <div class="modal-content">
-      <span class="close" onclick="closeCustomizer()">×</span>
+  <div class="detail-grid">
+    <section class="preview-wrap">
+      <div class="preview-stage">
+        <div id="ornamentPreview" class="ornament-preview">
+          <div class="hanger"></div>
+          <div class="ornament-shape">
+            <span id="previewEmoji">🎩</span>
+            <span id="previewName" class="preview-name"></span>
+          </div>
+        </div>
+      </div>
+      <p class="preview-note">Live preview · Your choices update instantly</p>
+    </section>
 
-      <h2 id="customTitle">Customize</h2>
+    <section class="details">
+      <p class="eyebrow">PERSONALIZE IT</p>
+      <h1 id="detailTitle">Top Hat</h1>
+      <h2 id="detailPrice">$14.00</h2>
 
-      <label>Name or Text</label>
-      <input id="customName" type="text" maxlength="20"
-             placeholder="Enter a name">
+      <label for="nameText">Name or text <small>(20 characters max)</small></label>
+      <input id="nameText" maxlength="20" placeholder="Enter a name" oninput="updatePreview()">
 
       <label>Color</label>
-      <div class="color-options">
-        <button class="swatch blue" onclick="selectColor('#168de0')"></button>
-        <button class="swatch red" onclick="selectColor('#e53945')"></button>
-        <button class="swatch green" onclick="selectColor('#18864b')"></button>
-        <button class="swatch white" onclick="selectColor('#f4f0df')"></button>
-        <button class="swatch gold" onclick="selectColor('#e7b83f')"></button>
-        <button class="swatch purple" onclick="selectColor('#a66bca')"></button>
-      </div>
+      <div class="swatches" id="swatches"></div>
 
-      <label>Lettering</label>
-      <select id="letterStyle">
-        <option value="Classic">Classic</option>
-        <option value="Bold">Bold</option>
-        <option value="Italic">Italic</option>
+      <label for="fontChoice">Lettering style</label>
+      <select id="fontChoice" onchange="updatePreview()">
+        <option value="classic">Classic</option>
+        <option value="bold">Bold</option>
+        <option value="script">Script</option>
+        <option value="mono">Monospace</option>
       </select>
 
-      <label>Quantity</label>
-      <input id="quantity" type="number" min="1" value="1">
+      <label for="qty">Quantity</label>
+      <input id="qty" type="number" min="1" value="1">
 
-      <button class="add-button" onclick="addToCart()">ADD TO CART</button>
-    </div>
+      <button class="primary wide" onclick="addDetailToCart()">ADD TO CART</button>
+    </section>
+  </div>
+</main>
+
+<main id="cartPage" class="hidden checkout-page">
+  <button class="back" onclick="goHome()">← Continue shopping</button>
+  <h1>Your Cart</h1>
+  <div id="cartList"></div>
+  <div class="total-row">
+    <span>Total</span>
+    <strong id="cartTotal">$0.00</strong>
+  </div>
+  <button class="primary wide" onclick="goCheckout()">CHECKOUT</button>
+</main>
+
+<main id="checkoutPage" class="hidden checkout-page">
+  <div class="checkout-head">
+    <h1>🔒 Secure Checkout</h1>
+    <button class="close" onclick="goHome()" aria-label="Close">×</button>
   </div>
 
-  <!-- Cart Popup -->
-  <div id="cartModal" class="modal">
-    <div class="modal-content">
-      <span class="close" onclick="toggleCart()">×</span>
-      <h2>Your Cart</h2>
-
-      <div id="cartItems"></div>
-
-      <h3 id="cartTotal">Total: $0.00</h3>
-
-      <button class="add-button" onclick="checkout()">Checkout</button>
+  <div class="checkout-inner">
+    <div class="total-row">
+      <span>Total:</span>
+      <strong id="checkoutTotal">$0.00</strong>
     </div>
-  </div>
 
-  <!-- Checkout Popup -->
-  <div id="checkoutModal" class="modal">
-    <div class="modal-content">
-      <span class="close" onclick="closeCheckout()">×</span>
-      <h2>Checkout</h2>
+    <h2>Contact Information</h2>
 
-      <input id="checkoutEmail" placeholder="Email" type="email">
-      <input id="checkoutName" placeholder="Full Name">
-      <input id="checkoutAddress" placeholder="Shipping Address">
-      <input id="checkoutCity" placeholder="City">
-      <input id="checkoutZip" placeholder="ZIP Code">
+    <label>Full Name *</label>
+    <input id="buyerName" placeholder="Your full name">
 
-      <button class="add-button" onclick="placeOrder()">Place Order</button>
+    <label>Email Address *</label>
+    <input id="buyerEmail" type="email" placeholder="you@example.com">
+
+    <h2>Shipping Address</h2>
+
+    <label>Street Address *</label>
+    <input id="street" placeholder="Street address">
+
+    <div class="two">
+      <div>
+        <label>City *</label>
+        <input id="city" placeholder="City">
+      </div>
+      <div>
+        <label>ZIP Code *</label>
+        <input id="zip" placeholder="ZIP Code">
+      </div>
     </div>
-  </div>
 
-  <script src="script.js"></script>
+    <h2>💳 Payment Information</h2>
+
+    <div class="demo-payment">
+      <strong>Demo payment</strong>
+      <p>This is a mock checkout. It does not collect card details or process real payments. Payment setup would be needed to launch a real store.</p>
+    </div>
+
+    <button class="pay" onclick="placeDemoOrder()">Place Demo Order</button>
+
+    <p class="lock-note">
+      🔒 Mock checkout · No real payment will be processed.
+    </p>
+  </div>
+</main>
+
+<div id="toast" class="toast"></div>
+
+<script src="script.js"></script>
 </body>
 </html>
