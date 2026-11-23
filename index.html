@@ -2,1410 +2,195 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Ornament Lab</title>
-
-<style>
-*{box-sizing:border-box}
-
-body{
-  margin:0;
-  font-family:Arial,Helvetica,sans-serif;
-  background:radial-gradient(ellipse at top left,#173957 0,transparent 45%),linear-gradient(#07111e,#0b192a);
-  color:#f4f8ff;
-  min-height:100vh
-}
-
-button,input,select,textarea{font:inherit}
-button{cursor:pointer}
-
-.top{
-  height:76px;
-  padding:0 5%;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  border-bottom:1px solid #294766;
-  background:#07111ee8;
-  position:sticky;
-  top:0;
-  z-index:10
-}
-
-.brand{
-  font-weight:900;
-  letter-spacing:3px;
-  color:white;
-  text-decoration:none;
-  font-size:20px
-}
-
-.brand span{color:#39aaff}
-
-.nav-actions{
-  display:flex;
-  align-items:center;
-  gap:12px
-}
-
-.cart-btn,.primary{
-  background:#39aaff;
-  color:#061321;
-  border:0;
-  border-radius:10px;
-  padding:13px 20px;
-  font-weight:800
-}
-
-.review-nav{
-  background:transparent;
-  border:1px solid #294766;
-  color:#f4f8ff;
-  padding:13px 20px;
-  border-radius:10px;
-  font-weight:bold
-}
-
-.review-nav:hover{
-  border-color:#39aaff;
-  color:#39aaff
-}
-
-.cart-btn b{
-  background:#07111e;
-  color:#fff;
-  border-radius:20px;
-  padding:3px 7px;
-  margin-left:7px
-}
-
-.hero{
-  text-align:center;
-  padding:100px 20px 115px;
-  background:radial-gradient(circle at 25% 30%,#16436866,transparent 35%),radial-gradient(circle at 80% 20%,#f1c84d16,transparent 30%);
-  position:relative
-}
-
-.snowflakes{
-  color:#b9e5ff;
-  font-size:25px;
-  margin-bottom:20px;
-  letter-spacing:8px
-}
-
-.eyebrow{
-  color:#78c9ff;
-  font-size:12px;
-  letter-spacing:3px;
-  font-weight:bold
-}
-
-.hero h1{
-  font-size:clamp(42px,8vw,88px);
-  letter-spacing:2px;
-  line-height:1.03;
-  margin:15px 0
-}
-
-.hero p:not(.eyebrow){
-  color:#b6c9dc;
-  margin-bottom:30px
-}
-
-.collection{padding:70px 5%}
-
-.collection h2{
-  text-align:center;
-  font-size:32px;
-  margin:10px 0 35px
-}
-
-.collection>.eyebrow{text-align:center}
-
-.product-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-  gap:20px
-}
-
-.product-card{
-  background:#101e30;
-  border:1px solid #294766;
-  border-radius:17px;
-  overflow:hidden;
-  cursor:pointer;
-  transition:.2s
-}
-
-.product-card:hover{
-  transform:translateY(-4px);
-  border-color:#39aaff
-}
-
-.product-art{
-  height:220px;
-  background:#172b42;
-  display:grid;
-  place-items:center;
-  font-size:100px
-}
-
-.product-card .card-copy{padding:20px}
-
-.product-card h3{margin:0 0 10px}
-
-.price{
-  color:#78c9ff;
-  font-weight:bold
-}
-
-.product-card p{color:#a4b9d0}
-
-.product-card button{
-  width:100%;
-  border:1px solid #39aaff;
-  color:#39aaff;
-  background:transparent;
-  border-radius:9px;
-  padding:11px;
-  font-weight:bold;
-  margin-top:10px
-}
-
-footer{
-  text-align:center;
-  padding:30px;
-  color:#8299b0;
-  border-top:1px solid #294766;
-  font-size:12px;
-  letter-spacing:1px
-}
-
-.hidden{display:none!important}
-
-.detail-page,.checkout-page,.reviews-page{
-  max-width:1100px;
-  margin:35px auto;
-  padding:20px
-}
-
-.back{
-  background:transparent;
-  color:#a4b9d0;
-  border:0;
-  padding:10px 0;
-  margin-bottom:20px
-}
-
-.detail-grid{
-  display:grid;
-  grid-template-columns:1.1fr .9fr;
-  gap:45px
-}
-
-.preview-stage{
-  background:#101e30;
-  border:1px solid #294766;
-  border-radius:20px;
-  min-height:500px;
-  display:grid;
-  place-items:center;
-  position:relative;
-  overflow:hidden;
-  background-image:radial-gradient(#254865 1px,transparent 1px);
-  background-size:22px 22px
-}
-
-.ornament-preview{
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  filter:drop-shadow(0 20px 25px #0008)
-}
-
-.hanger{
-  height:30px;
-  width:20px;
-  border:4px solid #e8d48d;
-  border-bottom:0;
-  border-radius:14px 14px 0 0
-}
-
-.ornament-shape{
-  width:250px;
-  height:260px;
-  background:var(--ornament-color,#168de0);
-  border:4px solid #ffffff33;
-  border-radius:48% 48% 42% 42%;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  gap:12px;
-  color:#fff;
-  text-shadow:0 2px 5px #0008;
-  box-shadow:inset -15px -20px 30px #0002,inset 12px 12px 30px #fff2
-}
-
-.ornament-shape span:first-child{font-size:90px}
-
-.preview-name{
-  font-size:24px;
-  max-width:90%;
-  overflow-wrap:anywhere;
-  text-align:center
-}
-
-.preview-note{
-  text-align:center;
-  color:#91a8c0;
-  font-size:13px
-}
-
-.details{padding:15px 0}
-
-.details h1{
-  font-size:42px;
-  margin:10px 0
-}
-
-.details h2{
-  color:#78c9ff;
-  margin:0 0 30px
-}
-
-.details label,.checkout-inner label{
-  display:block;
-  font-weight:bold;
-  margin:18px 0 8px;
-  color:#c4d1df
-}
-
-.details small{color:#8299b0;font-weight:normal}
-
-.details input,.details select,.checkout-inner input{
-  width:100%;
-  padding:14px;
-  background:#090f18;
-  color:white;
-  border:1px solid #294766;
-  border-radius:10px
-}
-
-.swatches{
-  display:flex;
-  gap:12px;
-  flex-wrap:wrap;
-  margin:10px 0
-}
-
-.swatch{
-  width:38px;
-  height:38px;
-  border-radius:50%;
-  border:3px solid #dce7f2;
-  box-shadow:0 0 0 2px #172b42
-}
-
-.swatch.selected{
-  outline:3px solid #39aaff;
-  outline-offset:3px
-}
-
-.wide{width:100%;margin-top:25px}
-
-.checkout-page{
-  max-width:780px;
-  background:#191919;
-  border:1px solid #333;
-  border-radius:14px;
-  padding:0 30px 30px;
-  overflow:hidden
-}
-
-.checkout-head{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin:0 -30px;
-  padding:25px 30px;
-  border-bottom:1px solid #333;
-  background:#111
-}
-
-.checkout-head h1{font-size:30px;margin:0}
-
-.close{
-  border:0;
-  background:transparent;
-  color:#aaa;
-  font-size:42px
-}
-
-.checkout-inner{padding-top:10px}
-
-.checkout-inner h2{
-  margin:24px 0 14px;
-  font-size:23px
-}
-
-.checkout-inner label{
-  color:#aaa;
-  margin-top:15px
-}
-
-.checkout-inner input{
-  background:#090909;
-  border:1px solid #363636;
-  padding:15px;
-  font-size:16px
-}
-
-.total-row{
-  display:flex;
-  justify-content:space-between;
-  font-size:23px;
-  font-weight:bold;
-  color:#168de0;
-  margin:12px 0 20px
-}
-
-.two{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:15px
-}
-
-.demo-payment{
-  border:1px solid #393939;
-  background:#101010;
-  padding:18px;
-  border-radius:10px;
-  color:#aaa;
-  line-height:1.5
-}
-
-.demo-payment strong{color:#f3f3f3}
-
-.pay{
-  width:100%;
-  background:#00c982;
-  border:0;
-  border-radius:12px;
-  padding:20px;
-  font-size:22px;
-  font-weight:900;
-  color:#031b12;
-  margin-top:30px
-}
-
-.lock-note{
-  text-align:center;
-  color:#666;
-  margin:22px 0
-}
-
-.toast{
-  position:fixed;
-  bottom:25px;
-  left:50%;
-  transform:translateX(-50%);
-  background:#39aaff;
-  color:#061321;
-  padding:12px 20px;
-  border-radius:10px;
-  font-weight:bold;
-  display:none;
-  z-index:20
-}
-
-.cart-item{
-  background:#101e30;
-  border:1px solid #294766;
-  border-radius:12px;
-  padding:18px;
-  margin:16px 0
-}
-
-.cart-item p{
-  color:#a4b9d0;
-  margin:8px 0
-}
-
-.cart-item button{display:inline-block;color:#e9a2ac}
-
-/* REVIEWS */
-
-.reviews-header{
-  text-align:center;
-  padding:45px 20px
-}
-
-.reviews-header h1{
-  font-size:60px;
-  margin:15px 0
-}
-
-.reviews-header p:not(.eyebrow){
-  color:#a4b9d0;
-  line-height:1.6
-}
-
-.review-form-section{
-  background:#101e30;
-  border:1px solid #294766;
-  border-radius:18px;
-  padding:30px;
-  margin-bottom:45px
-}
-
-.review-form-section h2{margin-bottom:25px}
-
-.review-form-section label{
-  display:block;
-  color:#c4d1df;
-  font-weight:bold;
-  margin:20px 0 10px
-}
-
-.review-form-section input,
-.review-form-section textarea{
-  width:100%;
-  background:#090f18;
-  color:#f4f8ff;
-  border:1px solid #294766;
-  border-radius:10px;
-  padding:15px;
-  font:inherit;
-  outline:none;
-  resize:vertical
-}
-
-.review-form-section input:focus,
-.review-form-section textarea:focus{
-  border-color:#39aaff
-}
-
-/* CUSTOM STAR GRAPHICS */
-
-.star-selector{
-  display:flex;
-  gap:8px;
-  margin:12px 0
-}
-
-.star-button{
-  width:45px;
-  height:45px;
-  padding:5px;
-  background:transparent;
-  border:none;
-  transition:.2s
-}
-
-.star-button:hover{transform:scale(1.15)}
-
-.star-svg{
-  width:100%;
-  height:100%;
-  display:block;
-  fill:#34465a;
-  stroke:#8398ae;
-  stroke-width:1.2;
-  stroke-linejoin:round;
-  transition:.2s
-}
-
-.star-button.active .star-svg{
-  fill:#ffd95a;
-  stroke:#ffd95a
-}
-
-.rating-text{
-  color:#a4b9d0;
-  font-size:14px;
-  margin-top:8px
-}
-
-/* REVIEW LIST */
-
-.reviews-list-section{margin-top:35px}
-
-.reviews-list-heading{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:15px;
-  margin-bottom:25px
-}
-
-.reviews-list-heading h2{font-size:28px}
-
-.reviews-list-heading span{
-  color:#a4b9d0;
-  font-size:14px
-}
-
-.review-card{
-  background:#101e30;
-  border:1px solid #294766;
-  border-radius:15px;
-  padding:25px;
-  margin-bottom:20px
-}
-
-.review-card-header{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  flex-wrap:wrap;
-  gap:15px
-}
-
-.review-author{
-  font-weight:bold;
-  font-size:18px;
-  color:#f4f8ff
-}
-
-.review-date{
-  color:#8299b0;
-  font-size:13px
-}
-
-.review-stars{
-  display:flex;
-  gap:3px;
-  width:120px;
-  height:24px;
-  margin:15px 0
-}
-
-.review-stars .star-svg{
-  fill:#ffd95a;
-  stroke:#ffd95a;
-  stroke-width:1.1
-}
-
-.review-stars .empty-star-svg{
-  fill:#34465a;
-  stroke:#8398ae
-}
-
-.review-body{
-  color:#c4d1df;
-  line-height:1.7;
-  overflow-wrap:anywhere
-}
-
-.no-reviews{
-  text-align:center;
-  padding:60px 20px;
-  background:#101e30;
-  border:1px dashed #294766;
-  border-radius:15px
-}
-
-.no-reviews h3{margin:15px 0}
-
-.no-reviews p{color:#a4b9d0}
-
-.empty-star{
-  width:55px;
-  height:55px;
-  margin:0 auto
-}
-
-.empty-star .star-svg{
-  fill:#ffd95a;
-  stroke:#ffd95a
-}
-
-/* MOBILE */
-
-@media(max-width:750px){
-  .detail-grid{
-    grid-template-columns:1fr;
-    gap:20px
-  }
-
-  .preview-stage{min-height:370px}
-
-  .ornament-shape{
-    width:210px;
-    height:220px
-  }
-
-  .checkout-page{
-    margin:15px;
-    padding:0 18px 25px
-  }
-
-  .checkout-head{
-    margin:0 -18px;
-    padding:22px 18px
-  }
-
-  .checkout-head h1{font-size:23px}
-
-  .two{grid-template-columns:1fr}
-
-  .hero{padding:75px 15px}
-}
-
-@media(max-width:600px){
-  .nav-actions{gap:6px}
-
-  .review-nav,.cart-btn{
-    padding:10px 12px;
-    font-size:13px
-  }
-
-  .brand{
-    font-size:15px;
-    letter-spacing:1px
-  }
-
-  .reviews-page{padding:15px}
-
-  .reviews-header h1{font-size:42px}
-
-  .review-form-section{padding:20px}
-
-  .reviews-list-heading{
-    align-items:flex-start;
-    flex-direction:column
-  }
-
-  .review-card{padding:20px}
-
-  .star-button{
-    width:40px;
-    height:40px
-  }
-}
-
-.preview-name.classic{font-family:Georgia,serif}
-.preview-name.bold{font-weight:900;letter-spacing:1px}
-.preview-name.script{font-family:cursive;font-style:italic}
-.preview-name.mono{font-family:monospace;letter-spacing:1px}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ornament Lab</title>
+  <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
-<header class="top">
-  <a class="brand" href="#home" onclick="goHome()">ORNAMENT <span>LAB</span></a>
+  <header class="navbar">
+    <a class="logo" href="#" onclick="goHome()">🎄 ORNAMENT LAB</a>
+    <nav>
+      <button onclick="goHome()">Shop</button>
+      <button onclick="openReviews()">Reviews</button>
+      <button onclick="openCart()">Cart (<span id="cartCount">0</span>)</button>
+    </nav>
+  </header>
 
-  <div class="nav-actions">
-    <button class="review-nav" onclick="openReviews()">Reviews</button>
-    <button class="cart-btn" onclick="openCart()">Cart <b id="cartCount">0</b></button>
-  </div>
-</header>
+  <!-- HOME PAGE -->
+  <main id="homePage" class="page">
+    <section class="hero">
+      <div>
+        <p class="tag">CUSTOM MADE FOR CHRISTMAS</p>
+        <h1>Make Christmas<br>More <span>Personal.</span></h1>
+        <p>Custom 3D printed ornaments made just for you.</p>
+        <button class="primary" onclick="scrollToShop()">Shop Ornaments</button>
+      </div>
+    </section>
 
-<!-- HOME PAGE -->
+    <section class="shop-section" id="shop">
+      <h2>Our Ornaments</h2>
+      <p class="subtitle">Choose your ornament and make it yours.</p>
+      <div id="productGrid" class="product-grid"></div>
+    </section>
 
-<main id="homePage">
+    <section class="review-preview">
+      <h2>What Customers Are Saying</h2>
+      <p>See what people think of Ornament Lab.</p>
+      <button class="primary" onclick="openReviews()">Read & Write Reviews</button>
+    </section>
+  </main>
 
-  <section class="hero">
-    <div class="snowflakes">❄　✦　❄　✧　❄</div>
-    <p class="eyebrow">THE HOLIDAY COLLECTION</p>
-    <h1>MAKE CHRISTMAS<br>YOUR OWN.</h1>
-    <p>Personalized 3D printed ornaments, designed by you.</p>
-    <a href="#products" class="primary">SHOP THE COLLECTION</a>
-  </section>
+  <!-- PRODUCT PAGE -->
+  <main id="productPage" class="page hidden">
+    <button class="back" onclick="goHome()">← Back to Shop</button>
 
-  <section id="products" class="collection">
-    <p class="eyebrow">MADE TO BE YOURS</p>
-    <h2>Pick your ornament</h2>
-    <div class="product-grid" id="productGrid"></div>
-  </section>
-
-  <footer>ORNAMENT LAB · CUSTOM 3D PRINTED HOLIDAY DECOR</footer>
-
-</main>
-
-<!-- PRODUCT PAGE -->
-
-<main id="detailPage" class="detail-page hidden">
-
-  <button class="back" onclick="goHome()">← Back to collection</button>
-
-  <div class="detail-grid">
-
-    <section class="preview-wrap">
-      <div class="preview-stage">
-
+    <section class="product-layout">
+      <div class="preview-container">
         <div id="ornamentPreview" class="ornament-preview">
-          <div class="hanger"></div>
-
-          <div class="ornament-shape">
-            <span id="previewEmoji">🎩</span>
-            <span id="previewName" class="preview-name"></span>
-          </div>
-
+          <span id="previewEmoji">🎄</span>
+          <span id="previewName">Your Name</span>
         </div>
-
+        <p class="subtitle">Live Preview</p>
       </div>
 
-      <p class="preview-note">Live preview · Your choices update instantly</p>
+      <div class="product-options">
+        <h1 id="detailTitle"></h1>
+        <h2 id="detailPrice"></h2>
+        <p>Customize your ornament below.</p>
+
+        <label for="customName">Name or Text</label>
+        <input id="customName" maxlength="20" placeholder="Enter a name" oninput="updatePreview()">
+
+        <label>Choose Color</label>
+        <div id="colorSwatches" class="swatches"></div>
+
+        <label for="fontChoice">Lettering Style</label>
+        <select id="fontChoice" onchange="updatePreview()">
+          <option value="classic">Classic</option>
+          <option value="bold">Bold</option>
+          <option value="script">Script</option>
+          <option value="mono">Monospace</option>
+        </select>
+
+        <label for="quantity">Quantity</label>
+        <input id="quantity" type="number" value="1" min="1" max="20">
+
+        <button class="primary full" onclick="addDetailToCart()">Add to Cart</button>
+      </div>
+    </section>
+  </main>
+
+  <!-- CART PAGE -->
+  <main id="cartPage" class="page hidden">
+    <button class="back" onclick="goHome()">← Continue Shopping</button>
+    <h1>Your Cart</h1>
+    <div id="cartItems"></div>
+    <div class="cart-bottom">
+      <h2 id="cartTotal"></h2>
+      <button class="primary" onclick="goCheckout()">Checkout</button>
+    </div>
+  </main>
+
+  <!-- CHECKOUT PAGE -->
+  <main id="checkoutPage" class="page hidden">
+    <button class="back" onclick="openCart()">← Back to Cart</button>
+    <h1>Checkout</h1>
+
+    <div class="checkout-layout">
+      <form id="checkoutForm">
+        <h2>Contact Information</h2>
+        <label>Email</label>
+        <input type="email" id="email" required placeholder="Email address">
+
+        <h2>Shipping Address</h2>
+        <label>Full Name</label>
+        <input id="shippingName" required>
+
+        <label>Address</label>
+        <input id="address" required>
+
+        <label>City</label>
+        <input id="city" required>
+
+        <label>State</label>
+        <input id="state" required>
+
+        <label>ZIP Code</label>
+        <input id="zip" required>
+
+        <div class="demo-notice">
+          Demo checkout only. No real payment is collected.
+        </div>
+
+        <button type="submit" class="primary full">Place Demo Order</button>
+      </form>
+
+      <div class="checkout-summary">
+        <h2>Order Summary</h2>
+        <div id="checkoutItems"></div>
+        <h2 id="checkoutTotal"></h2>
+      </div>
+    </div>
+  </main>
+
+  <!-- REVIEWS PAGE -->
+  <main id="reviewsPage" class="page hidden">
+    <button class="back" onclick="goHome()">← Back to Shop</button>
+
+    <section class="reviews-header">
+      <h1>Customer Reviews</h1>
+      <p>Share your experience with Ornament Lab.</p>
     </section>
 
-    <section class="details">
+    <section class="review-form-container">
+      <h2>Write a Review</h2>
 
-      <p class="eyebrow">PERSONALIZE IT</p>
-      <h1 id="detailTitle">Top Hat</h1>
-      <h2 id="detailPrice">$14.00</h2>
+      <form id="reviewForm">
+        <label for="reviewName">Your Name</label>
+        <input id="reviewName" maxlength="50" required placeholder="Enter your name">
 
-      <label for="nameText">Name or text <small>(20 characters max)</small></label>
-      <input id="nameText" type="text" maxlength="20" placeholder="Enter a name" oninput="updatePreview()">
+        <label>Your Rating</label>
+        <div id="ratingStars" class="rating-input">
+          <button type="button" onclick="setRating(1)" aria-label="1 star">☆</button>
+          <button type="button" onclick="setRating(2)" aria-label="2 stars">☆</button>
+          <button type="button" onclick="setRating(3)" aria-label="3 stars">☆</button>
+          <button type="button" onclick="setRating(4)" aria-label="4 stars">☆</button>
+          <button type="button" onclick="setRating(5)" aria-label="5 stars">☆</button>
+        </div>
 
-      <label>Color</label>
-      <div class="swatches" id="swatches"></div>
+        <label for="reviewText">Your Review</label>
+        <textarea id="reviewText" required maxlength="1000"
+          placeholder="What did you think of your ornament?"></textarea>
 
-      <label for="fontChoice">Lettering style</label>
-      <select id="fontChoice" onchange="updatePreview()">
-        <option value="classic">Classic</option>
-        <option value="bold">Bold</option>
-        <option value="script">Script</option>
-        <option value="mono">Monospace</option>
-      </select>
-
-      <label for="qty">Quantity</label>
-      <input id="qty" type="number" min="1" value="1">
-
-      <button class="primary wide" onclick="addDetailToCart()">ADD TO CART</button>
-
+        <button type="submit" class="primary full">Submit Review</button>
+      </form>
     </section>
 
-  </div>
+    <section class="reviews-list-section">
+      <h2>All Reviews</h2>
+      <div id="reviewsList"></div>
+    </section>
+  </main>
 
-</main>
-
-<!-- CART PAGE -->
-
-<main id="cartPage" class="hidden checkout-page">
-
-  <button class="back" onclick="goHome()">← Continue shopping</button>
-
-  <h1>Your Cart</h1>
-
-  <div id="cartList"></div>
-
-  <div class="total-row">
-    <span>Total</span>
-    <strong id="cartTotal">$0.00</strong>
-  </div>
-
-  <button class="primary wide" onclick="goCheckout()">CHECKOUT</button>
-
-</main>
-
-<!-- CHECKOUT PAGE -->
-
-<main id="checkoutPage" class="hidden checkout-page">
-
-  <div class="checkout-head">
-    <h1>🔒 Secure Checkout</h1>
-    <button class="close" onclick="goHome()" aria-label="Close">×</button>
-  </div>
-
-  <div class="checkout-inner">
-
-    <div class="total-row">
-      <span>Total:</span>
-      <strong id="checkoutTotal">$0.00</strong>
+  <!-- SUCCESS PAGE -->
+  <main id="successPage" class="page hidden">
+    <div class="success-box">
+      <h1>🎄 Order Placed!</h1>
+      <p>Your demo order has been submitted.</p>
+      <p>Thank you for shopping at Ornament Lab!</p>
+      <button class="primary" onclick="goHome()">Return to Shop</button>
     </div>
+  </main>
 
-    <h2>Contact Information</h2>
+  <footer>
+    <p>© 2026 Ornament Lab</p>
+    <button onclick="openReviews()">Reviews</button>
+  </footer>
 
-    <label>Full Name *</label>
-    <input id="buyerName" placeholder="Your full name">
+  <div id="toast" class="toast"></div>
 
-    <label>Email Address *</label>
-    <input id="buyerEmail" type="email" placeholder="you@example.com">
-
-    <h2>Shipping Address</h2>
-
-    <label>Street Address *</label>
-    <input id="street" placeholder="Street address">
-
-    <div class="two">
-      <div>
-        <label>City *</label>
-        <input id="city" placeholder="City">
-      </div>
-
-      <div>
-        <label>ZIP Code *</label>
-        <input id="zip" placeholder="ZIP Code">
-      </div>
-    </div>
-
-    <h2>💳 Payment Information</h2>
-
-    <div class="demo-payment">
-      <strong>Demo payment</strong>
-      <p>This is a mock checkout. It does not collect card details or process real payments.</p>
-    </div>
-
-    <button class="pay" onclick="placeDemoOrder()">Place Demo Order</button>
-
-    <p class="lock-note">🔒 Mock checkout · No real payment will be processed.</p>
-
-  </div>
-
-</main>
-
-<!-- REVIEWS PAGE -->
-
-<main id="reviewsPage" class="hidden reviews-page">
-
-  <button class="back" onclick="goHome()">← Back to collection</button>
-
-  <section class="reviews-header">
-    <p class="eyebrow">CUSTOMER FEEDBACK</p>
-    <h1>Reviews</h1>
-    <p>See what people think about Ornament Lab.</p>
-  </section>
-
-  <section class="review-form-section">
-
-    <h2>Write a Review</h2>
-
-    <label for="reviewerName">Your Name</label>
-    <input id="reviewerName" type="text" maxlength="50" placeholder="Enter your name">
-
-    <label>Your Rating</label>
-
-    <div class="star-selector">
-
-      <button type="button" class="star-button" onclick="setRating(1)" aria-label="1 star">
-        <svg viewBox="0 0 24 24" class="star-svg"><path d="M12 2.5L15 8.7L21.8 9.7L16.9 14.5L18.1 21.3L12 18.1L5.9 21.3L7.1 14.5L2.2 9.7L9 8.7Z"/></svg>
-      </button>
-
-      <button type="button" class="star-button" onclick="setRating(2)" aria-label="2 stars">
-        <svg viewBox="0 0 24 24" class="star-svg"><path d="M12 2.5L15 8.7L21.8 9.7L16.9 14.5L18.1 21.3L12 18.1L5.9 21.3L7.1 14.5L2.2 9.7L9 8.7Z"/></svg>
-      </button>
-
-      <button type="button" class="star-button" onclick="setRating(3)" aria-label="3 stars">
-        <svg viewBox="0 0 24 24" class="star-svg"><path d="M12 2.5L15 8.7L21.8 9.7L16.9 14.5L18.1 21.3L12 18.1L5.9 21.3L7.1 14.5L2.2 9.7L9 8.7Z"/></svg>
-      </button>
-
-      <button type="button" class="star-button" onclick="setRating(4)" aria-label="4 stars">
-        <svg viewBox="0 0 24 24" class="star-svg"><path d="M12 2.5L15 8.7L21.8 9.7L16.9 14.5L18.1 21.3L12 18.1L5.9 21.3L7.1 14.5L2.2 9.7L9 8.7Z"/></svg>
-      </button>
-
-      <button type="button" class="star-button" onclick="setRating(5)" aria-label="5 stars">
-        <svg viewBox="0 0 24 24" class="star-svg"><path d="M12 2.5L15 8.7L21.8 9.7L16.9 14.5L18.1 21.3L12 18.1L5.9 21.3L7.1 14.5L2.2 9.7L9 8.7Z"/></svg>
-      </button>
-
-    </div>
-
-    <p id="ratingText" class="rating-text">Select a rating</p>
-
-    <label for="reviewText">Your Review</label>
-    <textarea id="reviewText" placeholder="Tell us what you thought..." maxlength="1000" rows="5"></textarea>
-
-    <button class="primary wide" onclick="submitReview()">SUBMIT REVIEW</button>
-
-  </section>
-
-  <section class="reviews-list-section">
-
-    <div class="reviews-list-heading">
-      <h2>Customer Reviews</h2>
-      <span id="reviewCount">0 Reviews</span>
-    </div>
-
-    <div id="reviewsList"></div>
-
-    <div id="noReviews" class="no-reviews">
-      <div class="empty-star">
-        <svg viewBox="0 0 24 24" class="star-svg">
-          <path d="M12 2.5L15 8.7L21.8 9.7L16.9 14.5L18.1 21.3L12 18.1L5.9 21.3L7.1 14.5L2.2 9.7L9 8.7Z"/>
-        </svg>
-      </div>
-      <h3>No reviews yet</h3>
-      <p>Be the first to leave a review!</p>
-    </div>
-
-  </section>
-
-</main>
-
-<div id="toast" class="toast"></div>
-
-<script>
-
-// ======================================
-// PRODUCTS
-// ======================================
-
-const products = [
-  {name:'Top Hat',price:14,emoji:'🎩',color:'#168de0'},
-  {name:'Sword',price:16,emoji:'⚔️',color:'#168de0'},
-  {name:'Skateboard',price:15,emoji:'🛹',color:'#168de0'},
-  {name:'Guitar',price:17,emoji:'🎸',color:'#168de0'}
-];
-
-const colors = [
-  {name:'Blue',hex:'#168de0'},
-  {name:'Red',hex:'#e53945'},
-  {name:'Christmas Green',hex:'#18864b'},
-  {name:'Ivory',hex:'#f4f0df'},
-  {name:'Gold',hex:'#e7b83f'},
-  {name:'Purple',hex:'#a66bca'}
-];
-
-let chosenProduct=null;
-let chosenColor='#168de0';
-let cart=[];
-
-const pages=[
-  'homePage',
-  'detailPage',
-  'cartPage',
-  'checkoutPage',
-  'reviewsPage'
-];
-
-// ======================================
-// NAVIGATION
-// ======================================
-
-function showPage(id){
-
-  pages.forEach(p=>{
-    document.getElementById(p).classList.toggle('hidden',p!==id);
-  });
-
-  window.scrollTo(0,0);
-}
-
-function goHome(){
-  showPage('homePage');
-  window.location.hash='home';
-}
-
-// ======================================
-// PRODUCTS
-// ======================================
-
-function renderProducts(){
-
-  document.getElementById('productGrid').innerHTML=
-    products.map((p,i)=>`
-      <article class="product-card" onclick="openProduct(${i})">
-        <div class="product-art">${p.emoji}</div>
-
-        <div class="card-copy">
-          <h3>${p.name}</h3>
-          <p class="price">$${p.price.toFixed(2)}</p>
-          <p>Personalize colors and lettering.</p>
-          <button>VIEW & CUSTOMIZE</button>
-        </div>
-      </article>
-    `).join('');
-}
-
-// ======================================
-// PRODUCT CUSTOMIZATION
-// ======================================
-
-function openProduct(i){
-
-  chosenProduct=products[i];
-  chosenColor=chosenProduct.color;
-
-  document.getElementById('detailTitle').textContent=chosenProduct.name;
-  document.getElementById('detailPrice').textContent='$'+chosenProduct.price.toFixed(2);
-  document.getElementById('previewEmoji').textContent=chosenProduct.emoji;
-
-  document.getElementById('nameText').value='';
-  document.getElementById('qty').value=1;
-  document.getElementById('fontChoice').value='classic';
-
-  renderSwatches();
-  updatePreview();
-
-  showPage('detailPage');
-}
-
-function renderSwatches(){
-
-  document.getElementById('swatches').innerHTML=
-    colors.map(c=>`
-      <button
-        class="swatch ${chosenColor===c.hex?'selected':''}"
-        title="${c.name}"
-        aria-label="${c.name}"
-        style="background:${c.hex}"
-        onclick="pickColor('${c.hex}')">
-      </button>
-    `).join('');
-}
-
-function pickColor(hex){
-  chosenColor=hex;
-  renderSwatches();
-  updatePreview();
-}
-
-// ======================================
-// LIVE PREVIEW
-// ======================================
-
-function updatePreview(){
-
-  if(!chosenProduct)return;
-
-  let shape=document.querySelector('.ornament-shape');
-
-  shape.style.background=chosenColor;
-
-  let name=document.getElementById('previewName');
-
-  name.textContent=document.getElementById('nameText').value;
-
-  name.className='preview-name '+document.getElementById('fontChoice').value;
-}
-
-// ======================================
-// ADD TO CART
-// ======================================
-
-function addDetailToCart(){
-
-  let qty=parseInt(document.getElementById('qty').value,10);
-
-  if(!qty||qty<1){
-    toast('Choose a valid quantity');
-    return;
-  }
-
-  cart.push({
-    product:chosenProduct.name,
-    price:chosenProduct.price,
-    emoji:chosenProduct.emoji,
-    name:document.getElementById('nameText').value,
-    color:chosenColor,
-    font:document.getElementById('fontChoice').value,
-    qty
-  });
-
-  refreshCount();
-  toast('Added to cart');
-  goHome();
-}
-
-// ======================================
-// CART
-// ======================================
-
-function refreshCount(){
-
-  document.getElementById('cartCount').textContent=
-    cart.reduce((n,x)=>n+x.qty,0);
-}
-
-function cartSum(){
-
-  return cart.reduce((n,x)=>n+x.price*x.qty,0);
-}
-
-function openCart(){
-
-  if(!cart.length){
-    toast('Your cart is empty');
-    return;
-  }
-
-  renderCart();
-  showPage('cartPage');
-}
-
-function renderCart(){
-
-  document.getElementById('cartList').innerHTML=
-    cart.map((x,i)=>`
-      <div class="cart-item">
-        <h3>${x.emoji} ${x.product}</h3>
-        <p>Name: ${safe(x.name||'—')}</p>
-        <p>Color: ${x.color}</p>
-        <p>Font: ${x.font}</p>
-        <p>Quantity: ${x.qty}</p>
-        <strong>$${(x.price*x.qty).toFixed(2)}</strong>
-        <button class="back" onclick="removeItem(${i})">Remove</button>
-      </div>
-    `).join('');
-
-  document.getElementById('cartTotal').textContent='$'+cartSum().toFixed(2);
-}
-
-function removeItem(i){
-
-  cart.splice(i,1);
-  refreshCount();
-
-  if(cart.length){
-    renderCart();
-  }else{
-    goHome();
-  }
-}
-
-// ======================================
-// CHECKOUT
-// ======================================
-
-function goCheckout(){
-
-  if(!cart.length)return;
-
-  document.getElementById('checkoutTotal').textContent='$'+cartSum().toFixed(2);
-
-  showPage('checkoutPage');
-}
-
-function placeDemoOrder(){
-
-  let fields=[
-    'buyerName',
-    'buyerEmail',
-    'street',
-    'city',
-    'zip'
-  ];
-
-  if(fields.some(id=>!document.getElementById(id).value.trim())){
-    toast('Please complete the required fields');
-    return;
-  }
-
-  toast('Demo order complete! No payment was taken.');
-
-  cart=[];
-  refreshCount();
-
-  fields.forEach(id=>{
-    document.getElementById(id).value='';
-  });
-
-  setTimeout(goHome,1300);
-}
-
-// ======================================
-// REVIEWS
-// ======================================
-
-let selectedRating=0;
-
-let savedReviews=[];
-
-try{
-  savedReviews=JSON.parse(localStorage.getItem('ornamentLabReviews'))||[];
-}catch(error){
-  savedReviews=[];
-}
-
-function openReviews(){
-
-  showPage('reviewsPage');
-  renderReviews();
-  window.location.hash='reviews';
-}
-
-function setRating(rating){
-
-  selectedRating=rating;
-
-  document.querySelectorAll('.star-button').forEach((button,index)=>{
-    button.classList.toggle('active',index<rating);
-  });
-
-  document.getElementById('ratingText').textContent=
-    rating+' out of 5 stars selected';
-}
-
-function submitReview(){
-
-  const name=document.getElementById('reviewerName').value.trim();
-  const review=document.getElementById('reviewText').value.trim();
-
-  if(!name){
-    toast('Please enter your name');
-    return;
-  }
-
-  if(selectedRating===0){
-    toast('Please select a star rating');
-    return;
-  }
-
-  if(!review){
-    toast('Please write a review');
-    return;
-  }
-
-  const newReview={
-    name:name,
-    rating:selectedRating,
-    text:review,
-    date:new Date().toISOString()
-  };
-
-  savedReviews.unshift(newReview);
-
-  try{
-
-    localStorage.setItem(
-      'ornamentLabReviews',
-      JSON.stringify(savedReviews)
-    );
-
-  }catch(error){
-
-    toast('Unable to save review');
-    savedReviews.shift();
-    return;
-
-  }
-
-  document.getElementById('reviewerName').value='';
-  document.getElementById('reviewText').value='';
-
-  selectedRating=0;
-
-  document.querySelectorAll('.star-button').forEach(button=>{
-    button.classList.remove('active');
-  });
-
-  document.getElementById('ratingText').textContent='Select a rating';
-
-  renderReviews();
-  toast('Review submitted!');
-}
-
-function renderReviews(){
-
-  const list=document.getElementById('reviewsList');
-  const empty=document.getElementById('noReviews');
-  const count=document.getElementById('reviewCount');
-
-  count.textContent=
-    savedReviews.length+
-    (savedReviews.length===1?' Review':' Reviews');
-
-  if(savedReviews.length===0){
-
-    list.innerHTML='';
-    empty.style.display='block';
-    return;
-
-  }
-
-  empty.style.display='none';
-
-  list.innerHTML=savedReviews.map(review=>{
-
-    const date=new Date(review.date);
-
-    const formattedDate=isNaN(date.getTime())
-      ? ''
-      : date.toLocaleDateString(undefined,{
-          year:'numeric',
-          month:'long',
-          day:'numeric'
-        });
-
-    const stars=Array.from({length:5},(_,i)=>{
-
-      const filled=i<review.rating;
-
-      return `
-        <svg viewBox="0 0 24 24" class="star-svg ${filled?'':'empty-star-svg'}">
-          <path d="M12 2.5L15 8.7L21.8 9.7L16.9 14.5L18.1 21.3L12 18.1L5.9 21.3L7.1 14.5L2.2 9.7L9 8.7Z"/>
-        </svg>
-      `;
-
-    }).join('');
-
-    return `
-      <article class="review-card">
-
-        <div class="review-card-header">
-          <div>
-            <div class="review-author">${escapeReviewHTML(review.name)}</div>
-            <div class="review-date">${escapeReviewHTML(formattedDate)}</div>
-          </div>
-        </div>
-
-        <div class="review-stars">
-          ${stars}
-        </div>
-
-        <p class="review-body">
-          ${escapeReviewHTML(review.text)}
-        </p>
-
-      </article>
-    `;
-
-  }).join('');
-}
-
-// ======================================
-// SAFETY / HTML ESCAPING
-// ======================================
-
-function safe(s){
-
-  return String(s).replace(/[&<>"']/g,c=>({
-    '&':'&amp;',
-    '<':'&lt;',
-    '>':'&gt;',
-    '"':'&quot;',
-    "'":'&#39;'
-  }[c]));
-}
-
-function escapeReviewHTML(text){
-
-  return String(text).replace(/[&<>"']/g,char=>({
-    '&':'&amp;',
-    '<':'&lt;',
-    '>':'&gt;',
-    '"':'&quot;',
-    "'":'&#39;'
-  }[char]));
-}
-
-// ======================================
-// NOTIFICATIONS
-// ======================================
-
-function toast(msg){
-
-  let t=document.getElementById('toast');
-
-  t.textContent=msg;
-  t.style.display='block';
-
-  setTimeout(()=>{
-    t.style.display='none';
-  },2300);
-}
-
-// ======================================
-// INITIALIZATION
-// ======================================
-
-renderProducts();
-renderReviews();
-
-</script>
-
+  <script src="script.js"></script>
 </body>
 </html>
