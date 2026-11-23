@@ -1,196 +1,56 @@
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ornament Lab</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
+<!-- CHECKOUT PAGE -->
+<main id="checkoutPage" class="page hidden">
+  <button class="back" onclick="openCart()">← Back to Cart</button>
+  <h1>Checkout</h1>
 
-  <header class="navbar">
-    <a class="logo" href="#" onclick="goHome()">🎄 ORNAMENT LAB</a>
-    <nav>
-      <button onclick="goHome()">Shop</button>
-      <button onclick="openReviews()">Reviews</button>
-      <button onclick="openCart()">Cart (<span id="cartCount">0</span>)</button>
-    </nav>
-  </header>
+  <div class="checkout-layout">
+    <form id="checkoutForm">
+      <h2>Contact Information</h2>
+      <label>Email</label>
+      <input type="email" id="email" required placeholder="Email address">
 
-  <!-- HOME PAGE -->
-  <main id="homePage" class="page">
-    <section class="hero">
-      <div>
-        <p class="tag">CUSTOM MADE FOR CHRISTMAS</p>
-        <h1>Make Christmas<br>More <span>Personal.</span></h1>
-        <p>Custom 3D printed ornaments made just for you.</p>
-        <button class="primary" onclick="scrollToShop()">Shop Ornaments</button>
-      </div>
-    </section>
+      <h2>Shipping Address</h2>
+      <label>Full Name</label>
+      <input id="shippingName" required>
 
-    <section class="shop-section" id="shop">
-      <h2>Our Ornaments</h2>
-      <p class="subtitle">Choose your ornament and make it yours.</p>
-      <div id="productGrid" class="product-grid"></div>
-    </section>
+      <label>Address</label>
+      <input id="address" required>
 
-    <section class="review-preview">
-      <h2>What Customers Are Saying</h2>
-      <p>See what people think of Ornament Lab.</p>
-      <button class="primary" onclick="openReviews()">Read & Write Reviews</button>
-    </section>
-  </main>
+      <label>City</label>
+      <input id="city" required>
 
-  <!-- PRODUCT PAGE -->
-  <main id="productPage" class="page hidden">
-    <button class="back" onclick="goHome()">← Back to Shop</button>
+      <label>State</label>
+      <input id="state" required>
 
-    <section class="product-layout">
-      <div class="preview-container">
-        <div id="ornamentPreview" class="ornament-preview">
-          <span id="previewEmoji">🎄</span>
-          <span id="previewName">Your Name</span>
-        </div>
-        <p class="subtitle">Live Preview</p>
+      <label>ZIP Code</label>
+      <input id="zip" required>
+
+      <h2>Payment</h2>
+      <label for="demoCard">Credit Card Number (Demo)</label>
+      <div class="card-bar">
+        <span class="card-icon">💳</span>
+        <input
+          type="text"
+          id="demoCard"
+          placeholder="0000 0000 0000 0000"
+          maxlength="19"
+          autocomplete="off"
+          inputmode="numeric"
+        >
       </div>
 
-      <div class="product-options">
-        <h1 id="detailTitle"></h1>
-        <h2 id="detailPrice"></h2>
-        <p>Customize your ornament below.</p>
+      <button type="submit" class="primary full">Place Order</button>
 
-        <label for="customName">Name or Text</label>
-        <input id="customName" maxlength="20" placeholder="Enter a name" oninput="updatePreview()">
+      <p class="checkout-fineprint">
+        🔒 This is a mock checkout. No real payment will be processed.
+      </p>
+    </form>
 
-        <label>Choose Color</label>
-        <div id="colorSwatches" class="swatches"></div>
-
-        <label for="fontChoice">Lettering Style</label>
-        <select id="fontChoice" onchange="updatePreview()">
-          <option value="classic">Classic</option>
-          <option value="bold">Bold</option>
-          <option value="script">Script</option>
-          <option value="mono">Monospace</option>
-        </select>
-
-        <label for="quantity">Quantity</label>
-        <input id="quantity" type="number" value="1" min="1" max="20">
-
-        <button class="primary full" onclick="addDetailToCart()">Add to Cart</button>
-      </div>
-    </section>
-  </main>
-
-  <!-- CART PAGE -->
-  <main id="cartPage" class="page hidden">
-    <button class="back" onclick="goHome()">← Continue Shopping</button>
-    <h1>Your Cart</h1>
-    <div id="cartItems"></div>
-    <div class="cart-bottom">
-      <h2 id="cartTotal"></h2>
-      <button class="primary" onclick="goCheckout()">Checkout</button>
+    <div class="checkout-summary">
+      <h2>Order Summary</h2>
+      <div id="checkoutItems"></div>
+      <h2 id="checkoutTotal"></h2>
     </div>
-  </main>
-
-  <!-- CHECKOUT PAGE -->
-  <main id="checkoutPage" class="page hidden">
-    <button class="back" onclick="openCart()">← Back to Cart</button>
-    <h1>Checkout</h1>
-
-    <div class="checkout-layout">
-      <form id="checkoutForm">
-        <h2>Contact Information</h2>
-        <label>Email</label>
-        <input type="email" id="email" required placeholder="Email address">
-
-        <h2>Shipping Address</h2>
-        <label>Full Name</label>
-        <input id="shippingName" required>
-
-        <label>Address</label>
-        <input id="address" required>
-
-        <label>City</label>
-        <input id="city" required>
-
-        <label>State</label>
-        <input id="state" required>
-
-        <label>ZIP Code</label>
-        <input id="zip" required>
-
-        <div class="demo-notice">
-          Demo checkout only. No real payment is collected.
-        </div>
-
-        <button type="submit" class="primary full">Place Demo Order</button>
-      </form>
-
-      <div class="checkout-summary">
-        <h2>Order Summary</h2>
-        <div id="checkoutItems"></div>
-        <h2 id="checkoutTotal"></h2>
-      </div>
-    </div>
-  </main>
-
-  <!-- REVIEWS PAGE -->
-  <main id="reviewsPage" class="page hidden">
-    <button class="back" onclick="goHome()">← Back to Shop</button>
-
-    <section class="reviews-header">
-      <h1>Customer Reviews</h1>
-      <p>Share your experience with Ornament Lab.</p>
-    </section>
-
-    <section class="review-form-container">
-      <h2>Write a Review</h2>
-
-      <form id="reviewForm">
-        <label for="reviewName">Your Name</label>
-        <input id="reviewName" maxlength="50" required placeholder="Enter your name">
-
-        <label>Your Rating</label>
-        <div id="ratingStars" class="rating-input">
-          <button type="button" onclick="setRating(1)" aria-label="1 star">☆</button>
-          <button type="button" onclick="setRating(2)" aria-label="2 stars">☆</button>
-          <button type="button" onclick="setRating(3)" aria-label="3 stars">☆</button>
-          <button type="button" onclick="setRating(4)" aria-label="4 stars">☆</button>
-          <button type="button" onclick="setRating(5)" aria-label="5 stars">☆</button>
-        </div>
-
-        <label for="reviewText">Your Review</label>
-        <textarea id="reviewText" required maxlength="1000"
-          placeholder="What did you think of your ornament?"></textarea>
-
-        <button type="submit" class="primary full">Submit Review</button>
-      </form>
-    </section>
-
-    <section class="reviews-list-section">
-      <h2>All Reviews</h2>
-      <div id="reviewsList"></div>
-    </section>
-  </main>
-
-  <!-- SUCCESS PAGE -->
-  <main id="successPage" class="page hidden">
-    <div class="success-box">
-      <h1>🎄 Order Placed!</h1>
-      <p>Your demo order has been submitted.</p>
-      <p>Thank you for shopping at Ornament Lab!</p>
-      <button class="primary" onclick="goHome()">Return to Shop</button>
-    </div>
-  </main>
-
-  <footer>
-    <p>© 2026 Ornament Lab</p>
-    <button onclick="openReviews()">Reviews</button>
-  </footer>
-
-  <div id="toast" class="toast"></div>
-
-  <script src="script.js"></script>
-</body>
-</html>
+  </div>
+</main>
